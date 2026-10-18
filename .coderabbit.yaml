@@ -1,0 +1,31 @@
+# CodeRabbit AI Code Review Configuration
+# Enforces Android best practices, Kotlin coroutine safety, and bi-directional localization
+version: 2
+language: "en-US"
+tone_instructions: "Focus on Kotlin coroutine memory leaks, Android Jetpack Compose lifecycle, and Arabic/French localization strings."
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "main"
+      - "master"
+
+chat:
+  auto_reply: true
+
+tools:
+  ast-grep:
+    enabled: true
+
+path_filters:
+  - "!**/.gradle/**"
+  - "!**/build/**"
+  - "!**/.git/**"

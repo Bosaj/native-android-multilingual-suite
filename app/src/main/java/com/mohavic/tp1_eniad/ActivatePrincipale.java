@@ -8,6 +8,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.mohavic.tp1_eniad.domain.GreetingResolution;
+import com.mohavic.tp1_eniad.domain.ServiceLocator;
+
 public class ActivatePrincipale extends AppCompatActivity {
 
     @Override
@@ -20,5 +23,10 @@ public class ActivatePrincipale extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    /** Resolves multilingual greeting metadata through the decoupled domain container. */
+    public GreetingResolution resolveGreeting(String languageTag) {
+        return ServiceLocator.defaultInstance().greetingService().resolve(languageTag);
     }
 }

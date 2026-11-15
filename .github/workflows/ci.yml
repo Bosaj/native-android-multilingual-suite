@@ -28,6 +28,15 @@ jobs:
           test -f CODE_OF_CONDUCT.md && echo "CODE_OF_CONDUCT.md OK"
           test -f docs/wiki/Home.md && echo "docs/wiki/Home.md OK"
 
+      - name: Install Python QA tooling
+        run: pip install pytest ruff
+
+      - name: Run Ruff static analysis on repository tests
+        run: ruff check tests/
+
+      - name: Run Python resource & architecture checks
+        run: pytest tests/ -v
+
   build-apk:
     runs-on: ubuntu-latest
     permissions:
@@ -50,6 +59,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Run JVM Domain Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+
       - name: Build Android APK
         run: ./gradlew assembleDebug --no-daemon
 
@@ -63,3 +75,14 @@ jobs:
         with:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+
+  container-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build and verify non-root domain runtime container
+        run: |
+          docker build --target runtime -t android-multilingual:ci .
+          docker run --rm android-multilingual:ci

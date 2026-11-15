@@ -1,5 +1,5 @@
 # Stage 1: Compile pure Java 11 multilingual domain layer without Android SDK bloat
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM eclipse-temurin:25-jdk-alpine AS builder
 
 WORKDIR /src
 COPY app/src/main/java/com/mohavic/tp1_eniad/domain /src/domain
@@ -7,7 +7,7 @@ RUN mkdir -p /out \
     && javac --release 11 -encoding UTF-8 -d /out /src/domain/*.java
 
 # Stage 2: Minimal hardened non-root JRE runtime for domain verification
-FROM eclipse-temurin:17-jre-alpine AS runtime
+FROM eclipse-temurin:25-jre-alpine AS runtime
 
 RUN addgroup -g 10001 -S appgroup \
     && adduser -u 10001 -S -G appgroup -h /home/appuser appuser
